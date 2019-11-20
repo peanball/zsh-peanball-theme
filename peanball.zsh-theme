@@ -72,6 +72,6 @@ PROMPT+='$(git_super_status)'
 PROMPT+='%{$PROMPT_VENV_COLOR%}$(virtualenv_prompt_info)'
 
 # Result dependent prompt color
-PROMPT+='%(?.%{$fg_bold[green]%} ».%{$fg[red]%}!•)%{$reset_color%} '
+PROMPT+='%2{%(?.%{$fg_bold[green]%} ».%{$fg_bold[red]%}•%))%}%{$reset_color%} ' 
 
 
