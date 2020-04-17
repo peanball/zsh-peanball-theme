@@ -1,18 +1,16 @@
 #! /usr/bin/env zsh
-local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
+local return_code="%(?..%{$fg_bold[red]%}%? %{↵%G%}%{$reset_color%})"
 
 setopt promptsubst
 # setopt PRINT_EXIT_VALUE
 
 autoload -U add-zsh-hook
 
-PROMPT_SUCCESS_COLOR=$FG[076]
-PROMPT_FAILURE_COLOR=$FG[196]
-PROMPT_VCS_INFO_COLOR=$FG[242]
-PROMPT_VENV_COLOR=$FG[215]
-PROMPT_PROMPT=$FG[250]
-PROMPT_at=$FG[220]
-PROMPT_DATE_COLOR=$FG[242]
+PROMPT_VENV_COLOR=$fg_no_bold[yellow]
+PROMPT_PROMPT=$fg[default]
+PROMPT_at=$fg_bold[yellow]
+PROMPT_DATE_COLOR=$fg_no_bold[cyan]
+PROMPT_TIME_COLOR=$fg_bold[cyan]
 
 # Grab the current machine name 
 MACHINE_="%{$fg_bold[blue]%}%m%{$reset_color%}"
@@ -20,7 +18,7 @@ MACHINE_="%{$fg_bold[blue]%}%m%{$reset_color%}"
 # Grab the current username 
 CURRENT_USER_="%{$fg[green]%}%n%{$reset_color%}"
 
-PROMPT_DATE="${PROMPT_DATE_COLOR}%D{CW%W %d/%m/%Y %H:%M}%{$reset_color%}"
+PROMPT_DATE="%{${PROMPT_TIME_COLOR}%}%D{%H:%M} %{${PROMPT_DATE_COLOR}%}%D{%d/%m/%Y}%{$reset_color%}"
 
 # declare -A clocks
 # for h in $(echo $(seq 1 12)); do 
@@ -44,16 +42,17 @@ PROMPT_DATE="${PROMPT_DATE_COLOR}%D{CW%W %d/%m/%Y %H:%M}%{$reset_color%}"
 # }
 
 RPS1="$return_code ${PROMPT_DATE}"
+setopt transientrprompt
 
 ZSH_THEME_GIT_PROMPT_PREFIX="("
 ZSH_THEME_GIT_PROMPT_SUFFIX=")"
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
-ZSH_THEME_GIT_PROMPT_BRANCH="%{$reset_color%}%{$FG[213]%}"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_no_bold[magenta]%}"
 ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[yellow]%}%{•%G%}"
 ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{✖%G%}"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{$FG[117]%}%{+%G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%G%}"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%G%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[magenta]%}%{+%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{⇣%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{⇡%G%}"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{…%G%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}%{✔%G%}"
 
@@ -72,6 +71,6 @@ PROMPT+='$(git_super_status)'
 PROMPT+='%{$PROMPT_VENV_COLOR%}$(virtualenv_prompt_info)'
 
 # Result dependent prompt color
-PROMPT+='%2{%(?.%{$fg_bold[green]%} ».%{$fg_bold[red]%}•%))%}%{$reset_color%} ' 
+PROMPT+='%2{%(?. %{$fg_bold[green]%}❯.%{$fg[red]%}•%{$fg_bold[red]%}❯)%}%{$reset_color%} ' 
 
 
